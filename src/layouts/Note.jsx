@@ -2,6 +2,7 @@ import React from 'react';
 import { getInitialData } from '../utils/index.js';
 import NoteList from '../layouts/NoteList.jsx';
 import FormAddNote from "./FormAddNote.jsx";
+import Alert from "../components/Alert.jsx";
 
 class Note extends React.Component {
 	constructor(props) {
@@ -45,7 +46,7 @@ class Note extends React.Component {
 			id: +new Date(),
 			title: title,
 			body: body,
-			createdAt: new Date(),
+			createdAt: new Date().toISOString(),
 			archived: false
 		};
 
@@ -94,15 +95,24 @@ class Note extends React.Component {
 				/>
 				<div className="mt-5">
 					<h5>📝 Daftar Catatan Aktif</h5>
-					<NoteList
+					{ activeNotes.length >=1
+						? <NoteList
 						notes={activeNotes}
 						onDelete={this.onDeleteHandler}
-						arhiveNoteHandler = {this.arhiveNoteHandler}
-					/>
+						arhiveNoteHandler = {this.arhiveNoteHandler} />
+						: <Alert message="Tidak ada catatan 😙, silahkan tambahkan catatan baru 😊"/>
+					}
 				</div>
 				<div className="mt-5">
 					<h5>📝 Daftar Catatan Arsip</h5>
-					<NoteList notes={archivedNotes} arhiveNoteHandler={this.arhiveNoteHandler} onDelete={this.onDeleteHandler}/>
+					{
+						archivedNotes.length >= 1
+							? <NoteList
+								notes={archivedNotes}
+								rhiveNoteHandler={this.arhiveNoteHandler}
+								onDelete={this.onDeleteHandler}/>
+							: <Alert message="Tidak ada catatan 😙, silahkan tambahkan catatan baru 😊"/>
+					}
 				</div>
 			</div>
 		)
